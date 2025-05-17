@@ -1,3 +1,4 @@
+using DoMain.DTOs;
 using DoMain.Entities;
 
 namespace Infrastructure.Interfaces;
@@ -9,4 +10,7 @@ public interface IMemberService
     Task<string> CreateMemberAsync(Members member);
     Task<string> UpdateMemberAsync(Members member);
     Task<string> DeleteMemberAsync(int id);
+    Task<MostActiveMember> GetMostActiveMemberAsync();
+    Task<int> GetMembersWithBorrowingCountAsync();
+    Task<FirstMemberWithFine> GetFirstMemberWithFine();
 }

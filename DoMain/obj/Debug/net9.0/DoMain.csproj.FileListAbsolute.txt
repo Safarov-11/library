@@ -9,3 +9,4 @@ C:\Users\admin\OneDrive\Desktop\C# 3month\WebAPI\home-task-14-05\DoMain\obj\Debu
 C:\Users\admin\OneDrive\Desktop\C# 3month\WebAPI\home-task-14-05\DoMain\obj\Debug\net9.0\refint\DoMain.dll
 C:\Users\admin\OneDrive\Desktop\C# 3month\WebAPI\home-task-14-05\DoMain\obj\Debug\net9.0\DoMain.pdb
 C:\Users\admin\OneDrive\Desktop\C# 3month\WebAPI\home-task-14-05\DoMain\obj\Debug\net9.0\ref\DoMain.dll
+C:\Users\admin\OneDrive\Desktop\C# 3month\WebAPI\home-task-14-05\DoMain\obj\Debug\net9.0\DoMain.sourcelink.json

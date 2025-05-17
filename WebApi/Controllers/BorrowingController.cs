@@ -1,3 +1,4 @@
+using DoMain.DTOs;
 using DoMain.Entities;
 using Infrastructure.Interfaces;
 using Infrastructure.Services;
@@ -12,18 +13,47 @@ public class BorrowingController
 {
     private IBorrowingService brServ = new BorrowingService();
 
-    [HttpPost]
-    public async Task<string> CreateBorrowingAsync(Borrowings borrowing){
-        return await brServ.CreateBorrowingAsync(borrowing);
-    }
 
     [HttpGet]
-    public Task<List<Borrowings>> GetAllBorrowingsAsync(){
-        return brServ.GetAllBorrowingsAsync();
+    public async Task<List<Borrowings>> GetAllBorrowingsAsync()
+    {
+        return await brServ.GetAllBorrowingsAsync();
     }
 
     [HttpGet("{id:int}")]
-    public Task<List<Borrowings>> GetMemberBorrowingsByIdAsync(int id){
-        return brServ.GetMemberBorrowingsAsync(id);
+    public async Task<List<Borrowings>> GetMemberBorrowingsByIdAsync(int id)
+    {
+        return await brServ.GetMemberBorrowingsAsync(id);
     }
+
+    [HttpPost]
+    public async Task<string> CreateBorrowingAsync(Borrowings borrowing)
+    {
+        return await brServ.CreateBorrowingAsync(borrowing);
+    }
+
+    [HttpPut]
+    public async Task<string> ReturnBookAsync(int borrowingId)
+    {
+        return await brServ.ReturnBookAsync(borrowingId);
+    }
+
+    [HttpGet("All borrowings count")]
+    public async Task<int> AllBorrowingsCountAsync()
+    {
+        return await brServ.AllBorrowingsCountAsync();
+    }
+    [HttpGet("Avg fine")]
+    public async Task<decimal> GetAvgFineAsync()
+    {
+        return await brServ.GetAvgFineAsync();
+    }
+
+    [HttpGet("Not Returned Books")]
+    public async Task<List<NotReturnedBooks>> NotReturnedBooksAsync()
+    {
+        return await brServ.GetNotReturnedBooksAsync();
+    }
+
+    
 }

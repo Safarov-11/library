@@ -13,3 +13,4 @@ C:\Users\admin\OneDrive\Desktop\C# 3month\WebAPI\home-task-14-05\Infrastructure\
 C:\Users\admin\OneDrive\Desktop\C# 3month\WebAPI\home-task-14-05\Infrastructure\obj\Debug\net9.0\refint\Infrastructure.dll
 C:\Users\admin\OneDrive\Desktop\C# 3month\WebAPI\home-task-14-05\Infrastructure\obj\Debug\net9.0\Infrastructure.pdb
 C:\Users\admin\OneDrive\Desktop\C# 3month\WebAPI\home-task-14-05\Infrastructure\obj\Debug\net9.0\ref\Infrastructure.dll
+C:\Users\admin\OneDrive\Desktop\C# 3month\WebAPI\home-task-14-05\Infrastructure\obj\Debug\net9.0\Infrastructure.sourcelink.json

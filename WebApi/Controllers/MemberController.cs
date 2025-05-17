@@ -1,3 +1,4 @@
+using DoMain.DTOs;
 using DoMain.Entities;
 using Infrastructure.Interfaces;
 using Infrastructure.Services;
@@ -11,27 +12,52 @@ public class MemberController
 {
     private IMemberService MemberServ = new MemberService();
     [HttpGet]
-    public async Task<List<Members>> GetAllMembersAsync(){
+    public async Task<List<Members>> GetAllMembersAsync()
+    {
         return await MemberServ.GetAllMembersAsync();
     }
 
     [HttpGet("{id:int}")]
-    public async Task<Members> GetMemberByIdAsync(int id){
+    public async Task<Members> GetMemberByIdAsync(int id)
+    {
         return await MemberServ.GetMemberByIdAsync(id);
     }
 
     [HttpPost]
-    public async Task<string> CreateMemberAsync(Members member){
+    public async Task<string> CreateMemberAsync(Members member)
+    {
         return await MemberServ.CreateMemberAsync(member);
     }
 
     [HttpPut]
-    public async Task<string> UpdateMemberAsync(Members member){
+    public async Task<string> UpdateMemberAsync(Members member)
+    {
         return await MemberServ.UpdateMemberAsync(member);
     }
 
     [HttpDelete]
-    public async Task<string> DeleteMemberAsync(int id){
+    public async Task<string> DeleteMemberAsync(int id)
+    {
         return await MemberServ.DeleteMemberAsync(id);
     }
+
+    [HttpGet("Most Active Member")]
+    public async Task<MostActiveMember> GetMostPopuarBookAsync()
+    {
+        return await MemberServ.GetMostActiveMemberAsync();
+    }
+    
+    [HttpGet("Coun of Members with borrowings")]
+    public async Task<int> GetMembersWithBorrowingCountAsync()
+    {
+        return await MemberServ.GetMembersWithBorrowingCountAsync();
+    }
+
+    [HttpGet("First member with fine")]
+    public async Task<FirstMemberWithFine> GetFirstMemberWithFine()
+    {
+        return await MemberServ.GetFirstMemberWithFine();
+    }
+
+
 }

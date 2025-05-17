@@ -8,6 +8,6 @@ public class Borrowings
     public DateTime BorrowDate { get; set; } = DateTime.Now;
     public DateTime DueDate { get; set; } = DateTime.Now.AddDays(10);
     public DateTime? ReturnDate { get; set; }
-    public decimal Fine { get; set; }
+    public decimal Fine { get; set; } = 0;
     
 }
