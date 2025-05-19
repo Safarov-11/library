@@ -128,7 +128,23 @@ limit 1
             var res = await connection.QuerySingleOrDefaultAsync<MostPopularGenre>(cmd);
             return res;
         }
-        
+
     }
 
+    public async Task<List<MostPopularBook>> GetMostPopularBooksAsync()
+    {
+        using (var connection = await context.GetDbConnectionAsync())
+        {
+            var cmd = @"
+            select bk.title, bk.genre, bk.totalcopies, count(b.id) as borrowingsCount
+from borrowings b
+join books bk on bk.id = b.bookId
+group by bk.title, bk.genre, bk.totalcopies
+having count(b.id)>5";
+
+            var result = await connection.QueryAsync<MostPopularBook>(cmd);
+            return result.ToList();
+        }
+    }
+    
 }

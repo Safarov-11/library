@@ -13,4 +13,6 @@ public interface IMemberService
     Task<MostActiveMember> GetMostActiveMemberAsync();
     Task<int> GetMembersWithBorrowingCountAsync();
     Task<FirstMemberWithFine> GetFirstMemberWithFine();
+    Task<List<MostActiveMember>> GetTop5ostActiveMembersAsync();
+    Task<List<Members>> GetMembersWhoPayFineAsync();
 }

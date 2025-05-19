@@ -14,4 +14,5 @@ public interface IBookService
     Task<List<Books>> NotAvailableBooksAsync();
     Task<int> GetUnpopularBooksCountAsync();
     Task<MostPopularGenre> GetMostPopularGenreAsync();
+    Task<List<MostPopularBook>> GetMostPopularBooksAsync();
 }

@@ -12,5 +12,6 @@ public interface IBorrowingService
     Task<int> AllBorrowingsCountAsync();
     Task<decimal> GetAvgFineAsync();
     Task<List<NotReturnedBooks>> GetNotReturnedBooksAsync();
-    
+    Task<decimal> GetSumOfFinesAsync();
+    Task<int> GetCountOfFinesAsync();
 }

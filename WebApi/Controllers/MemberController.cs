@@ -59,5 +59,15 @@ public class MemberController
         return await MemberServ.GetFirstMemberWithFine();
     }
 
+    [HttpGet("5 most Active Member")]
+    public async Task<List<MostActiveMember>> GetTop5ostActiveMembersAsync()
+    {
+        return await MemberServ.GetTop5ostActiveMembersAsync();
+    }
 
+    [HttpGet("Members who payed fine")]
+    public async Task<List<Members>> GetMembersWhoPayFineAsync()
+    {
+        return await MemberServ.GetMembersWhoPayFineAsync();
+    }
 }

@@ -54,6 +54,16 @@ public class BorrowingController
     {
         return await brServ.GetNotReturnedBooksAsync();
     }
-
     
+    [HttpGet("Sum off all fines")]
+    public async Task<decimal> GetSumOfFinesAsync()
+    {
+        return await brServ.GetSumOfFinesAsync();
+    }
+    
+    [HttpGet("count off all fines")]
+    public async Task<int> GetCountOfFinesAsync()
+    {
+        return await brServ.GetCountOfFinesAsync();
+    }
 }

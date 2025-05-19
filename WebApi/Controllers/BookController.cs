@@ -64,4 +64,10 @@ public class BookController
     {
         return await bookServ.GetMostPopularGenreAsync();
     }
+
+    [HttpGet("Popular Books")]
+    public async Task<List<MostPopularBook>> GetMostPopularBooksAsync()
+    {
+        return await bookServ.GetMostPopularBooksAsync();
+    }
 }
