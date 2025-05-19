@@ -6,10 +6,8 @@ using Infrastructure.Interfaces;
 
 namespace Infrastructure.Services;
 
-public class BorrowingService : IBorrowingService
+public class BorrowingService(DataContext context) : IBorrowingService
 {
-    private readonly DataContext context = new DataContext();
-
     public async Task<int> AllBorrowingsCountAsync()
     {
         using (var connection = await context.GetDbConnectionAsync())

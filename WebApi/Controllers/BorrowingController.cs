@@ -9,10 +9,8 @@ namespace WebApi.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 
-public class BorrowingController
+public class BorrowingController(IBorrowingService brServ)
 {
-    private IBorrowingService brServ = new BorrowingService();
-
 
     [HttpGet]
     public async Task<List<Borrowings>> GetAllBorrowingsAsync()

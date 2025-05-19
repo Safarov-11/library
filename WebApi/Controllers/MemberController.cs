@@ -8,9 +8,8 @@ namespace WebApi.Controllers;
 
 [Controller]
 [Route("api/[controller]")]
-public class MemberController
+public class MemberController(IMemberService MemberServ)
 {
-    private IMemberService MemberServ = new MemberService();
     [HttpGet]
     public async Task<List<Members>> GetAllMembersAsync()
     {

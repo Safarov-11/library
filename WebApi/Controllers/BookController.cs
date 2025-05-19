@@ -8,9 +8,8 @@ namespace WebApi.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class BookController
+public class BookController(IBookService bookServ)
 {
-    private IBookService bookServ = new BookService();
     [HttpGet]
     public async Task<List<Books>> GetAllBooksAsync()
     {

@@ -6,9 +6,8 @@ using Infrastructure.Interfaces;
 
 namespace Infrastructure.Services;
 
-public class BookService : IBookService
+public class BookService(DataContext context) : IBookService
 {
-    private readonly DataContext context = new DataContext();
     public async Task<string> CreateBookAsync(Books book)
     {
         using (var connection = await context.GetDbConnectionAsync())
