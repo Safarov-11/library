@@ -1,3 +1,4 @@
+using DoMain.ApiResponse;
 using DoMain.DTOs;
 using DoMain.Entities;
 using Infrastructure.Interfaces;
@@ -11,61 +12,61 @@ namespace WebApi.Controllers;
 public class BookController(IBookService bookServ)
 {
     [HttpGet]
-    public async Task<List<Books>> GetAllBooksAsync()
+    public async Task<Response<List<Books>>> GetAllBooksAsync()
     {
         return await bookServ.GetAllBooksAsync();
     }
 
     [HttpGet("{id:int}")]
-    public async Task<Books> GetBookByIdAsync(int id)
+    public async Task<Response<Books>> GetBookByIdAsync(int id)
     {
         return await bookServ.GetBookByIdAsync(id);
     }
 
     [HttpPost]
-    public async Task<string> CreateBookAsync(Books book)
+    public async Task<Response<string>> CreateBookAsync(Books book)
     {
         return await bookServ.CreateBookAsync(book);
     }
 
     [HttpPut]
-    public async Task<string> UpdateBookAsync(Books book)
+    public async Task<Response<string>> UpdateBookAsync(Books book)
     {
         return await bookServ.UpdateBookAsync(book);
     }
 
     [HttpDelete]
-    public async Task<string> DeleteBookAsync(int id)
+    public async Task<Response<string>> DeleteBookAsync(int id)
     {
         return await bookServ.DeleteBookAsync(id);
     }
 
     [HttpGet("Most Popular Book")]
-    public async Task<MostPopularBook> GetMostPopuarBookAsync()
+    public async Task<Response<MostPopularBook>> GetMostPopuarBookAsync()
     {
         return await bookServ.GetMostPopularBookAsync();
     }
 
     [HttpGet("Not Available books")]
-    public async Task<List<Books>> NotAvailableBooksAsync()
+    public async Task<Response<List<Books>>> NotAvailableBooksAsync()
     {
         return await bookServ.NotAvailableBooksAsync();
     }
     
     [HttpGet("Get unpopular Books count")]
-    public async Task<int> GetUnpopularBooksAsync()
+    public async Task<Response<int>> GetUnpopularBooksAsync()
     {
         return await bookServ.GetUnpopularBooksCountAsync();
     }
 
     [HttpGet("Get most popular genre")]
-    public async Task<MostPopularGenre> GetMostPopularGenreAsync()
+    public async Task<Response<MostPopularGenre>> GetMostPopularGenreAsync()
     {
         return await bookServ.GetMostPopularGenreAsync();
     }
 
     [HttpGet("Popular Books")]
-    public async Task<List<MostPopularBook>> GetMostPopularBooksAsync()
+    public async Task<Response<List<MostPopularBook>>> GetMostPopularBooksAsync()
     {
         return await bookServ.GetMostPopularBooksAsync();
     }

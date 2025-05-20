@@ -1,4 +1,5 @@
 using Dapper;
+using DoMain.ApiResponse;
 using DoMain.DTOs;
 using DoMain.Entities;
 using Infrastructure.Data;
@@ -8,7 +9,7 @@ namespace Infrastructure.Services;
 
 public class MemberService(DataContext context) : IMemberService
 {
-    public async Task<string> CreateMemberAsync(Members member)
+    public async Task<Response<string>> CreateMemberAsync(Members member)
     {
         using (var connection = await context.GetDbConnectionAsync())
         {
@@ -16,47 +17,53 @@ public class MemberService(DataContext context) : IMemberService
                         values(@fullName, @phone, @email, @membershipDate)";
 
             var result = await connection.ExecuteAsync(cmd, member);
-            return result > 0 ? "sucssesfully inserted to table" : "Failed!";
+            return result == null
+            ? new Response<string>("Some thing went wrong", System.Net.HttpStatusCode.InternalServerError)
+            : new Response<string>(null,"Success");
         }
     }
 
-    public async Task<string> DeleteMemberAsync(int id)
+    public async Task<Response<string>> DeleteMemberAsync(int id)
     {
         using (var connection = await context.GetDbConnectionAsync())
         {
             var cmd = @"Delete from members where id = @id";
 
             var result = await connection.ExecuteAsync(cmd, new { id = id });
-            return result > 0 ? "Sucssesfully deleted from table" : "Failed!";
+            return result == null
+            ? new Response<string>("Some thing went wrong", System.Net.HttpStatusCode.InternalServerError)
+            : new Response<string>(null,"Success");
         }
 
     }
 
 
-    public async Task<List<Members>> GetAllMembersAsync()
+    public async Task<Response<List<Members>>> GetAllMembersAsync()
     {
         using (var connection = await context.GetDbConnectionAsync())
         {
             var cmd = @"select * from members";
 
             var result = await connection.QueryAsync<Members>(cmd);
-            return result.ToList();
+            return new Response<List<Members>>(result.ToList(), "Success");
         }
     }
 
 
-    public async Task<Members> GetMemberByIdAsync(int id)
+    public async Task<Response<Members>> GetMemberByIdAsync(int id)
     {
         using (var connection = await context.GetDbConnectionAsync())
         {
             var cmd = @"select * from members where id = @id";
             var result = await connection.QueryFirstOrDefaultAsync<Members>(cmd, new { id = id });
-            return result;
+            return result == null
+            ? new Response<Members>("Some thing went wrong", System.Net.HttpStatusCode.InternalServerError)
+            : new Response<Members>(null,"Success");
         }
     }
 
 
-    public async Task<string> UpdateMemberAsync(Members member)
+    public async Task<Response<string>> UpdateMemberAsync(Members member)
     {
         using (var connection = await context.GetDbConnectionAsync())
         {
@@ -68,11 +75,13 @@ public class MemberService(DataContext context) : IMemberService
             ";
 
             var result = await connection.ExecuteAsync(cmd, member);
-            return result > 0 ? "Sucssesfully Updated table" : "Failed!";
+            return result == null
+            ? new Response<string>("Some thing went wrong", System.Net.HttpStatusCode.InternalServerError)
+            : new Response<string>(null,"Success");
         }
     }
 
-    public async Task<MostActiveMember> GetMostActiveMemberAsync()
+    public async Task<Response<MostActiveMember>> GetMostActiveMemberAsync()
     {
         using (var connection = await context.GetDbConnectionAsync())
         {
@@ -85,11 +94,13 @@ order by borrowingsCount desc
 limit 1";
 
             var result = await connection.QuerySingleOrDefaultAsync<MostActiveMember>(cmd);
-            return result;
+            return result == null
+            ? new Response<MostActiveMember>("Some thing went wrong", System.Net.HttpStatusCode.InternalServerError)
+            : new Response<MostActiveMember>(null,"Success");
         }
     }
 
-    public async Task<int> GetMembersWithBorrowingCountAsync()
+    public async Task<Response<int>> GetMembersWithBorrowingCountAsync()
     {
         using (var connection = await context.GetDbConnectionAsync())
         {
@@ -99,11 +110,13 @@ join borrowings b on b.memberId = m.id
 where b.id > 0";
 
             var res = await connection.ExecuteScalarAsync(cmd);
-            return Convert.ToInt32(res);
+            return res == null
+            ? new Response<int>("Some thing went wrong", System.Net.HttpStatusCode.InternalServerError)
+            : new Response<int>(default,"Success");
         }
     }
 
-    public async Task<FirstMemberWithFine> GetFirstMemberWithFine()
+    public async Task<Response<FirstMemberWithFine>> GetFirstMemberWithFine()
     {
         using (var connection = await context.GetDbConnectionAsync())
         {
@@ -116,10 +129,12 @@ order by b.returnDate
 limit 1";
 
             var res = await connection.QueryFirstOrDefaultAsync<FirstMemberWithFine>(cmd);
-            return res;
+            return res == null
+            ? new Response<FirstMemberWithFine>("Some thing went wrong", System.Net.HttpStatusCode.InternalServerError)
+            : new Response<FirstMemberWithFine>(null,"Success");
         }
     }
-    public async Task<List<MostActiveMember>> GetTop5ostActiveMembersAsync()
+    public async Task<Response<List<MostActiveMember>>> GetTop5ostActiveMembersAsync()
     {
         using (var connection = await context.GetDbConnectionAsync())
         {
@@ -132,11 +147,11 @@ order by borrowingsCount desc
 limit 5";
 
             var result = await connection.QueryAsync<MostActiveMember>(cmd);
-            return result.ToList();
+            return new Response<List<MostActiveMember>>(result.ToList(), "Success");
         }
     }
 
-    public async Task<List<Members>> GetMembersWhoPayFineAsync()
+    public async Task<Response<List<Members>>> GetMembersWhoPayFineAsync()
     {
         using (var connection = await context.GetDbConnectionAsync())
         {
@@ -146,7 +161,7 @@ join members m on m.id = b.memberId
 where returnDate>DueDate and fine = 0";
 
             var result = await connection.QueryAsync<Members>(cmd);
-            return result.ToList();
+            return new Response<List<Members>>(result.ToList(), "Success");
         }
     }
 }

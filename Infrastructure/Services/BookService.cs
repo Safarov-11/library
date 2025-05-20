@@ -1,4 +1,6 @@
+using System.Net;
 using Dapper;
+using DoMain.ApiResponse;
 using DoMain.DTOs;
 using DoMain.Entities;
 using Infrastructure.Data;
@@ -8,7 +10,7 @@ namespace Infrastructure.Services;
 
 public class BookService(DataContext context) : IBookService
 {
-    public async Task<string> CreateBookAsync(Books book)
+    public async Task<Response<string>> CreateBookAsync(Books book)
     {
         using (var connection = await context.GetDbConnectionAsync())
         {
@@ -16,44 +18,50 @@ public class BookService(DataContext context) : IBookService
                         values(@title,@genre,@publicationYear,@totalCopies,@AvailableCopies)";
 
             var result = await connection.ExecuteAsync(cmd, book);
-            return result > 0 ? "sucssesfully inserted to table" : "Failed!";
+            return result == null
+            ? new Response<string>("Some thing went wrong", HttpStatusCode.InternalServerError)
+            : new Response<string>(null,"Success");
         }
     }
 
-    public async Task<string> DeleteBookAsync(int id)
+    public async Task<Response<string>> DeleteBookAsync(int id)
     {
         using (var connection = await context.GetDbConnectionAsync())
         {
             var cmd = @"Delete from books where id = @id";
 
             var result = await connection.ExecuteAsync(cmd, new { id = id });
-            return result > 0 ? "Sucssesfully deleted from table" : "Failed!";
+            return result == null
+            ? new Response<string>("Some thing went wrong", HttpStatusCode.InternalServerError)
+            : new Response<string>(default,"Success");
         }
 
     }
 
-    public async Task<List<Books>> GetAllBooksAsync()
+    public async Task<Response<List<Books>>> GetAllBooksAsync()
     {
         using (var connection = await context.GetDbConnectionAsync())
         {
             var cmd = @"select * from books";
 
             var result = await connection.QueryAsync<Books>(cmd);
-            return result.ToList();
+            return new Response<List<Books>>(result.ToList(), "Success");
         }
     }
 
-    public async Task<Books> GetBookByIdAsync(int id)
+    public async Task<Response<Books>> GetBookByIdAsync(int id)
     {
         using (var connection = await context.GetDbConnectionAsync())
         {
             var cmd = @"select * from books where id = @id";
             var result = await connection.QueryFirstOrDefaultAsync<Books>(cmd, new { id = id });
-            return result;
+            return result == null
+            ? new Response<Books>("Some thing went wrong", HttpStatusCode.InternalServerError)
+            : new Response<Books>(null,"Success");
         }
     }
 
-    public async Task<string> UpdateBookAsync(Books book)
+    public async Task<Response<string>> UpdateBookAsync(Books book)
     {
         using (var connection = await context.GetDbConnectionAsync())
         {
@@ -66,11 +74,13 @@ public class BookService(DataContext context) : IBookService
             ";
 
             var result = await connection.ExecuteAsync(cmd, book);
-            return result > 0 ? "Sucssesfully Updated table" : "Failed!";
+            return result == null
+            ? new Response<string>("Some thing went wrong", HttpStatusCode.InternalServerError)
+            : new Response<string>(null,"Success");
         }
     }
 
-    public async Task<MostPopularBook> GetMostPopularBookAsync()
+    public async Task<Response<MostPopularBook>> GetMostPopularBookAsync()
     {
         using (var connection = await context.GetDbConnectionAsync())
         {
@@ -83,22 +93,24 @@ order by borrowingsCount desc
 limit 1";
 
             var result = await connection.QuerySingleOrDefaultAsync<MostPopularBook>(cmd);
-            return result;
+            return result == null
+            ? new Response<MostPopularBook>("Some thing went wrong", HttpStatusCode.InternalServerError)
+            : new Response<MostPopularBook>(null,"Success");
         }
     }
 
-    public async Task<List<Books>> NotAvailableBooksAsync()
+    public async Task<Response<List<Books>>> NotAvailableBooksAsync()
     {
         using (var connection = await context.GetDbConnectionAsync())
         {
             var cmd = @"select * from books where availableCopies = 0";
 
             var res = await connection.QueryAsync<Books>(cmd);
-            return res.ToList();
+            return new Response<List<Books>>(res.ToList(), "Success");
         }
     }
 
-    public async Task<int> GetUnpopularBooksCountAsync()
+    public async Task<Response<int>> GetUnpopularBooksCountAsync()
     {
         using (var connection = await context.GetDbConnectionAsync())
         {
@@ -109,11 +121,13 @@ JOIN borrowings b ON bk.id = b.bookId
 WHERE b.id IS NULL";
 
             var res = await connection.ExecuteScalarAsync(cmd);
-            return Convert.ToInt32(res);
+            return res == null
+            ? new Response<int>("Some thing went wrong", HttpStatusCode.InternalServerError)
+            : new Response<int>(default,"Success");
         }
     }
 
-    public async Task<MostPopularGenre> GetMostPopularGenreAsync()
+    public async Task<Response<MostPopularGenre>> GetMostPopularGenreAsync()
     {
         using (var connection = await context.GetDbConnectionAsync())
         {
@@ -125,12 +139,14 @@ limit 1
 ";
 
             var res = await connection.QuerySingleOrDefaultAsync<MostPopularGenre>(cmd);
-            return res;
+            return res == null
+            ? new Response<MostPopularGenre>("Some thing went wrong", HttpStatusCode.InternalServerError)
+            : new Response<MostPopularGenre>(null,"Success");
         }
 
     }
 
-    public async Task<List<MostPopularBook>> GetMostPopularBooksAsync()
+    public async Task<Response<List<MostPopularBook>>> GetMostPopularBooksAsync()
     {
         using (var connection = await context.GetDbConnectionAsync())
         {
@@ -142,8 +158,7 @@ group by bk.title, bk.genre, bk.totalcopies
 having count(b.id)>5";
 
             var result = await connection.QueryAsync<MostPopularBook>(cmd);
-            return result.ToList();
+            return new Response<List<MostPopularBook>>(result.ToList(), "Success");
         }
     }
-    
 }
